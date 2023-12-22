@@ -11,10 +11,10 @@ export default function optimizePalate(pixels, factor = 10) {
   const map = new Map()
 
   for (const pixel of pixels) {
-    const { r, g, b } = pixel.color
+    const { r, g, b, a } = pixel.color
     const key = `${Math.floor(r / factor) * factor},${
       Math.floor(g / factor) * factor
-    },${Math.floor(b / factor) * factor}`
+    },${Math.floor(b / factor) * factor},${Math.floor(a / factor) * factor}`
     if (map.has(key)) {
       map.get(key).push(pixel)
     } else {
@@ -27,8 +27,8 @@ export default function optimizePalate(pixels, factor = 10) {
   for (const [key, value] of map) {
     const counts = new Map()
     for (const pixel of value) {
-      const { r, g, b } = pixel.color
-      const key = `${r},${g},${b}`
+      const { r, g, b, a } = pixel.color
+      const key = `${r},${g},${b},${a}`
       if (counts.has(key)) {
         counts.set(key, counts.get(key) + 1)
       } else {
@@ -47,11 +47,12 @@ export default function optimizePalate(pixels, factor = 10) {
   }
 
   for (const [key, value] of mapMostCommon) {
-    const [r, g, b] = value.split(',').map(v => parseInt(v, 10))
+    const [r, g, b, a] = value.split(',').map(x => parseInt(x))
     for (const pixel of map.get(key)) {
       pixel.color.r = r
       pixel.color.g = g
       pixel.color.b = b
+      pixel.color.a = a
     }
   }
 
