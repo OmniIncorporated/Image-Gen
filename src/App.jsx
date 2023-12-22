@@ -8,6 +8,7 @@ import base64ToCanvas from './util/convert/base64ToCanvas'
 import { useEffect } from 'react'
 import scaleCanvas from './util/convert/scaleCanvas'
 import increasePixelSize from './util/convert/increasePixelSize'
+import optimizePalate from './util/optimize/optimizePalate'
 // import groupBy from "./util/groupBy"
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
   const [width, setWidth] = useState(0)
   const [height, setHeight] = useState(0)
   const [pixelSize, setPixelSize] = useState(1)
+  const [palateScale, setPalateScale] = useState(1)
 
   const originalCanvas = useRef(null)
   const canvasHolderRef = useRef(null)
@@ -41,7 +43,9 @@ function App() {
 
   function handleCopyData() {
     const pixels = canvasToPixels(canvas)
-    const optimize = runLengthEncoding(pixels)
+    const palateOptimize =
+      palateScale === 1 ? pixels : optimizePalate(pixels, palateScale)
+    const optimize = runLengthEncoding(palateOptimize)
     const pixelSizeChanged = increasePixelSize(optimize, pixelSize)
     const base64 = pixelsToBase64(pixelSizeChanged)
     console.log(base64.length)
@@ -50,9 +54,11 @@ function App() {
 
   function handleReDraw() {
     const pixels = canvasToPixels(canvas)
-    const pixelSizeChanged = increasePixelSize(pixels, pixelSize)
-    const optimize = runLengthEncoding(pixelSizeChanged)
-    const base64 = pixelsToBase64(optimize)
+    const palateOptimize =
+      palateScale === 1 ? pixels : optimizePalate(pixels, palateScale)
+    const optimize = runLengthEncoding(palateOptimize)
+    const pixelSizeChanged = increasePixelSize(optimize, pixelSize)
+    const base64 = pixelsToBase64(pixelSizeChanged)
     const newCanvas = base64ToCanvas(
       base64,
       canvas.width === 0 ? width : canvas.width * pixelSize,
@@ -89,6 +95,12 @@ function App() {
         placeholder="height"
         value={height}
         onChange={e => setHeight(e.target.value)}
+      />
+      <input
+        type="number"
+        placeholder="palet scale"
+        value={palateScale}
+        onChange={e => setPalateScale(e.target.value)}
       />
       <button
         onClick={() =>
