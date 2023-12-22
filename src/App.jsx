@@ -11,20 +11,33 @@ import increasePixelSize from './util/convert/increasePixelSize'
 // import groupBy from "./util/groupBy"
 
 function App() {
-  const originalCanvas = useRef(null)
   const [canvas, setCanvas] = useState(null)
+  const [redrawCanvas, setRedrawCanvas] = useState(null)
   const [width, setWidth] = useState(0)
   const [height, setHeight] = useState(0)
   const [pixelSize, setPixelSize] = useState(1)
+
+  const originalCanvas = useRef(null)
+  const canvasHolderRef = useRef(null)
+  const reDrawCanvasHolderRef = useRef(null)
 
   useEffect(() => {
     if (canvas && canvasHolderRef.current) {
       canvasHolderRef.current.innerHTML = ''
       canvasHolderRef.current.appendChild(canvas)
+
+      setRedrawCanvas(null)
     }
   }, [canvas])
 
-  const canvasHolderRef = useRef(null)
+  useEffect(() => {
+    if (redrawCanvas && reDrawCanvasHolderRef.current) {
+      reDrawCanvasHolderRef.current.innerHTML = ''
+      reDrawCanvasHolderRef.current.appendChild(redrawCanvas)
+    } else {
+      reDrawCanvasHolderRef.current.innerHTML = ''
+    }
+  }, [redrawCanvas])
 
   function handleCopyData() {
     const pixels = canvasToPixels(canvas)
@@ -37,10 +50,15 @@ function App() {
 
   function handleReDraw() {
     const pixels = canvasToPixels(canvas)
-    const optimize = runLengthEncoding(pixels)
+    const pixelSizeChanged = increasePixelSize(pixels, pixelSize)
+    const optimize = runLengthEncoding(pixelSizeChanged)
     const base64 = pixelsToBase64(optimize)
-    const newCanvas = base64ToCanvas(base64, canvas.width, canvas.height)
-    canvasHolderRef.current.appendChild(newCanvas)
+    const newCanvas = base64ToCanvas(
+      base64,
+      canvas.width === 0 ? width : canvas.width * pixelSize,
+      canvas.height === 0 ? height : canvas.height * pixelSize
+    )
+    setRedrawCanvas(newCanvas)
   }
 
   async function handleImageChange(e) {
@@ -87,6 +105,7 @@ function App() {
       <button onClick={handleCopyData}>copy data</button>
       <button onClick={handleReDraw}>Re Draw</button>
       <div ref={canvasHolderRef} />
+      <div ref={reDrawCanvasHolderRef} />
     </>
   )
 }
