@@ -11,6 +11,7 @@ import increasePixelSize from './util/convert/increasePixelSize'
 // import groupBy from "./util/groupBy"
 
 function App() {
+  const originalCanvas = useRef(null)
   const [canvas, setCanvas] = useState(null)
   const [width, setWidth] = useState(0)
   const [height, setHeight] = useState(0)
@@ -48,6 +49,7 @@ function App() {
     setCanvas(imageToCanvas(image))
     setWidth(image.width)
     setHeight(image.height)
+    originalCanvas.current = imageToCanvas(image)
   }
 
   return (
@@ -70,7 +72,11 @@ function App() {
         value={height}
         onChange={e => setHeight(e.target.value)}
       />
-      <button onClick={() => setCanvas(scaleCanvas(canvas, width, height))}>
+      <button
+        onClick={() =>
+          setCanvas(scaleCanvas(originalCanvas.current, width, height))
+        }
+      >
         scale
       </button>
       <input
