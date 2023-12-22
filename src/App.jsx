@@ -61,11 +61,13 @@ function App() {
       <input
         type="number"
         placeholder="width"
+        value={width}
         onChange={e => setWidth(e.target.value)}
       />
       <input
         type="number"
         placeholder="height"
+        value={height}
         onChange={e => setHeight(e.target.value)}
       />
       <button onClick={() => setCanvas(scaleCanvas(canvas, width, height))}>
