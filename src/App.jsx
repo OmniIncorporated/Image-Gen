@@ -63,8 +63,8 @@ function App() {
     const base64 = pixelsToBase64(pixelSizeChanged)
     const canvasTemplate = renderToString(
       <CanvasTemplate
-        width={canvas.width}
-        height={canvas.height}
+        width={canvas.width * pixelSize}
+        height={canvas.height * pixelSize}
         canvasData={base64}
       />
     )
