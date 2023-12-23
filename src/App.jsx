@@ -88,19 +88,25 @@ function App() {
         type="number"
         placeholder="width"
         value={width}
-        onChange={e => setWidth(e.target.value)}
+        min={1}
+        step={1}
+        onChange={e => setWidth(Math.floor(Math.abs(e.target.value)))}
       />
       <input
         type="number"
         placeholder="height"
         value={height}
-        onChange={e => setHeight(e.target.value)}
+        min={1}
+        step={1}
+        onChange={e => setHeight(Math.floor(Math.abs(e.target.value)))}
       />
       <input
         type="number"
         placeholder="palet scale"
         value={palateScale}
-        onChange={e => setPalateScale(e.target.value)}
+        min={1}
+        step={1}
+        onChange={e => setPalateScale(Math.floor(Math.abs(e.target.value)))}
       />
       <button
         onClick={() =>
@@ -112,7 +118,10 @@ function App() {
       <input
         type="number"
         placeholder="pixel size"
-        onChange={e => setPixelSize(e.target.value)}
+        value={pixelSize}
+        min={1}
+        step={1}
+        onChange={e => setPixelSize(Math.floor(Math.abs(e.target.value)))}
       />
       <button onClick={handleCopyData}>copy data</button>
       <button onClick={handleReDraw}>Re Draw</button>
