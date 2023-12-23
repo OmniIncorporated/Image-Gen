@@ -9,6 +9,8 @@ import { useEffect } from 'react'
 import scaleCanvas from './util/convert/scaleCanvas'
 import increasePixelSize from './util/convert/increasePixelSize'
 import optimizePalate from './util/optimize/optimizePalate'
+import { renderToString } from 'react-dom/server'
+import CanvasTemplate from './template/Canvas'
 // import groupBy from "./util/groupBy"
 
 function App() {
@@ -50,6 +52,23 @@ function App() {
     const base64 = pixelsToBase64(pixelSizeChanged)
     console.log(base64.length)
     navigator.clipboard.writeText(base64)
+  }
+
+  function handleCopyAsExample() {
+    const pixels = canvasToPixels(canvas)
+    const palateOptimize =
+      palateScale === 1 ? pixels : optimizePalate(pixels, palateScale)
+    const optimize = runLengthEncoding(palateOptimize)
+    const pixelSizeChanged = increasePixelSize(optimize, pixelSize)
+    const base64 = pixelsToBase64(pixelSizeChanged)
+    const canvasTemplate = renderToString(
+      <CanvasTemplate
+        width={canvas.width}
+        height={canvas.height}
+        canvasData={base64}
+      />
+    )
+    navigator.clipboard.writeText(canvasTemplate)
   }
 
   function handleReDraw() {
@@ -125,6 +144,7 @@ function App() {
       />
       <button onClick={handleCopyData}>copy data</button>
       <button onClick={handleReDraw}>Re Draw</button>
+      <button onClick={handleCopyAsExample}>Copy As Example</button>
       <div ref={canvasHolderRef} />
       <div ref={reDrawCanvasHolderRef} />
     </>
