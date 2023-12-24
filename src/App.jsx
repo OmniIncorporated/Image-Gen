@@ -103,6 +103,7 @@ function App() {
         name="image"
         onChange={handleImageChange}
       />
+      <label>width: </label>
       <input
         type="number"
         placeholder="width"
@@ -111,6 +112,7 @@ function App() {
         step={1}
         onChange={e => setWidth(Math.floor(Math.abs(e.target.value)))}
       />
+      <label>height: </label>
       <input
         type="number"
         placeholder="height"
@@ -119,6 +121,7 @@ function App() {
         step={1}
         onChange={e => setHeight(Math.floor(Math.abs(e.target.value)))}
       />
+      <label>palate scale: </label>
       <input
         type="number"
         placeholder="palet scale"
@@ -134,6 +137,7 @@ function App() {
       >
         scale
       </button>
+      <label>pixel size: </label>
       <input
         type="number"
         placeholder="pixel size"
