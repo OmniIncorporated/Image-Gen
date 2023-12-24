@@ -3,7 +3,7 @@ import imageToCanvas from './util/convert/imageToCanvas'
 import fileToImage from './util/convert/fileToImage'
 import canvasToPixels from './util/convert/canvasToPixels'
 import runLengthEncoding from './util/optimize/runLengthEncoding'
-import pixelsToBase64 from './util/convert/pixelToBase64'
+import pixelsToString from './util/convert/pixelsToString'
 import base64ToCanvas from './util/convert/base64ToCanvas'
 import { useEffect } from 'react'
 import scaleCanvas from './util/convert/scaleCanvas'
@@ -49,7 +49,7 @@ function App() {
       palateScale === 1 ? pixels : optimizePalate(pixels, palateScale)
     const optimize = runLengthEncoding(palateOptimize)
     const pixelSizeChanged = increasePixelSize(optimize, pixelSize)
-    const base64 = pixelsToBase64(pixelSizeChanged)
+    const base64 = pixelsToString(pixelSizeChanged)
     console.log(base64.length)
     navigator.clipboard.writeText(base64)
   }
@@ -60,7 +60,7 @@ function App() {
       palateScale === 1 ? pixels : optimizePalate(pixels, palateScale)
     const optimize = runLengthEncoding(palateOptimize)
     const pixelSizeChanged = increasePixelSize(optimize, pixelSize)
-    const base64 = pixelsToBase64(pixelSizeChanged)
+    const base64 = pixelsToString(pixelSizeChanged)
     const canvasTemplate = renderToString(
       <CanvasTemplate
         width={canvas.width * pixelSize}
@@ -77,7 +77,7 @@ function App() {
       palateScale === 1 ? pixels : optimizePalate(pixels, palateScale)
     const optimize = runLengthEncoding(palateOptimize)
     const pixelSizeChanged = increasePixelSize(optimize, pixelSize)
-    const base64 = pixelsToBase64(pixelSizeChanged)
+    const base64 = pixelsToString(pixelSizeChanged)
     const newCanvas = base64ToCanvas(
       base64,
       canvas.width === 0 ? width : canvas.width * pixelSize,
