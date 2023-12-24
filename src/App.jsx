@@ -4,7 +4,7 @@ import fileToImage from './util/convert/fileToImage'
 import canvasToPixels from './util/convert/canvasToPixels'
 import runLengthEncoding from './util/optimize/runLengthEncoding'
 import pixelsToString from './util/convert/pixelsToString'
-import base64ToCanvas from './util/convert/base64ToCanvas'
+import stringToCanvas from './util/convert/stringToCanvas'
 import { useEffect } from 'react'
 import scaleCanvas from './util/convert/scaleCanvas'
 import increasePixelSize from './util/convert/increasePixelSize'
@@ -78,7 +78,7 @@ function App() {
     const optimize = runLengthEncoding(palateOptimize)
     const pixelSizeChanged = increasePixelSize(optimize, pixelSize)
     const base64 = pixelsToString(pixelSizeChanged)
-    const newCanvas = base64ToCanvas(
+    const newCanvas = stringToCanvas(
       base64,
       canvas.width === 0 ? width : canvas.width * pixelSize,
       canvas.height === 0 ? height : canvas.height * pixelSize

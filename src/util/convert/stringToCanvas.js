@@ -1,4 +1,4 @@
-export default function base64ToCanvas(base64, width, height) {
+export default function stringToCanvas(string, width, height) {
   const canvas = document.createElement('canvas')
   const context = canvas.getContext('2d')
   canvas.width = width
@@ -7,20 +7,20 @@ export default function base64ToCanvas(base64, width, height) {
   let x = 0
   let y = 0
   let i = 0
-  while (i < base64.length) {
+  while (i < string.length) {
     let w = ''
-    while (base64[i] !== '|' && i < base64.length) {
-      w += base64[i++]
+    while (string[i] !== '|' && i < string.length) {
+      w += string[i++]
     }
     i++ // Skip the "|"
     let h = ''
-    while (base64[i] !== '#' && i < base64.length) {
-      h += base64[i++]
+    while (string[i] !== '#' && i < string.length) {
+      h += string[i++]
     }
     i++ // Skip the "#"
     let color = ''
-    for (let j = 0; j < 8 && i < base64.length; j++) {
-      color += base64[i++]
+    for (let j = 0; j < 8 && i < string.length; j++) {
+      color += string[i++]
     }
 
     // Parse integers from w and h
