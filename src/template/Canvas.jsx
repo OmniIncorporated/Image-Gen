@@ -1,48 +1,5 @@
 export default function CanvasTemplate({ width, height, canvasData }) {
-  const script = `
-  const logo = '${canvasData}'
-  var cnv = document.getElementById('logo')
-  var ctx = cnv.getContext('2d')
-  if (ctx == null) ctx = cnv.context2D
-  base64ToCanvas(logo, cnv, ctx)
-
-  function base64ToCanvas(base64, canvas, ctx) {
-    let x = 0
-    let y = 0
-    let i = 0
-    while (i < base64.length) {
-      let w = ''
-      while (base64[i] !== '|' && i < base64.length) {
-        w += base64[i++]
-      }
-      i++ // Skip the "|"
-      let h = ''
-      while (base64[i] !== '#' && i < base64.length) {
-        h += base64[i++]
-      }
-      i++ // Skip the "#"
-      let color = ''
-      for (let j = 0; j < 8 && i < base64.length; j++) {
-        color += base64[i++]
-      }
-
-      // Parse integers from w and h
-      const widthInt = parseInt(w, 10)
-      const heightInt = parseInt(h, 10)
-
-      // Set color and draw the rectangle
-      ctx.fillStyle = '#' + color
-      ctx.fillRect(x, y, widthInt, heightInt)
-
-      // Update x and y for the next rectangle
-      x += widthInt
-      if (x >= canvas.width) {
-        x = 0
-        y += heightInt
-      }
-    }
-  }
-`
+  const script = `var I="${canvasData}",o=document.getElementById("logo"),e=o.getContext("2d");e==null&&(e=o.context2D);a(I,o,e);function a(l,v,h){let n=0,i=0,t=0;for(;t<l.length;){let c="";for(;l[t]!=="|"&&t<l.length;)c+=l[t++];t++;let g="";for(;l[t]!=="#"&&t<l.length;)g+=l[t++];t++;let f="";for(let d=0;d<8&&t<l.length;d++)f+=l[t++];let r=parseInt(c,10),w=parseInt(g,10);h.fillStyle="#"+f,h.fillRect(n,i,r,w),n+=r,n>=v.width&&(n=0,i+=w)}}`
 
   return (
     <html>
@@ -52,6 +9,7 @@ export default function CanvasTemplate({ width, height, canvasData }) {
       </head>
       <body>
         <canvas width={width} height={height} id="logo"></canvas>
+        <p>Made By SkidMall | OMNI</p>
         <script dangerouslySetInnerHTML={{ __html: script }}></script>
       </body>
     </html>
